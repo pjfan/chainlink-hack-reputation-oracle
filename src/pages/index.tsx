@@ -239,6 +239,7 @@ const Home: NextPage = () => {
           also allows the user to follow/unfollow a wallet address.
         </p>
         <p>Try it yourself!</p>
+        <p>did: {cyberConnect?.did}</p>
       </div>
       <WalletConnectButton />
       {address && (
