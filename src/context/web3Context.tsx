@@ -1,14 +1,15 @@
-import React, { useState, useEffect, useContext, useCallback } from "react";
-import Web3Modal from "web3modal";
-import { ethers } from "ethers";
-import CyberConnect from "@cyberlab/cyberconnect";
+import React, { useState, useEffect, useContext, useCallback } from 'react';
+import Web3Modal from 'web3modal';
+import { ethers } from 'ethers';
+import CyberConnect from '@cyberlab/cyberconnect';
 import {
   authenticateUserDid,
   getDidProvider,
   initThreeId,
-} from "../hooks/useDidConnect";
-import { IDX } from "@ceramicstudio/idx";
-import type { CeramicApi } from "@ceramicnetwork/common";
+  initCeramic,
+} from '../hooks/useDidConnect';
+import { IDX } from '@ceramicstudio/idx';
+import type { CeramicApi } from '@ceramicnetwork/common';
 
 interface Web3ContextInterface {
   connectWallet: () => Promise<void>;
@@ -20,22 +21,19 @@ interface Web3ContextInterface {
 
 export const Web3Context = React.createContext<Web3ContextInterface>({
   connectWallet: async () => undefined,
-  address: "",
-  ens: "",
+  address: '',
+  ens: '',
   idx: undefined,
   cyberConnect: null,
 });
 
 export const Web3ContextProvider: React.FC = ({ children }) => {
-  const [address, setAddress] = useState<string>("");
-  const [ens, setEns] = useState<string | null>("");
+  const [address, setAddress] = useState<string>('');
+  const [ens, setEns] = useState<string | null>('');
   const [idx, setIdx] = useState<IDX>();
   const [cyberConnect, setCyberConnect] = useState<CyberConnect | null>(null);
 
-  async function getEnsByAddress(
-    provider: ethers.providers.Web3Provider,
-    address: string
-  ) {
+  async function getEnsByAddress(provider: ethers.providers.Web3Provider, address: string) {
     const ens = await provider.lookupAddress(address);
     return ens;
   }
@@ -46,43 +44,41 @@ export const Web3ContextProvider: React.FC = ({ children }) => {
       namespace: 'CyberConnect',
     });
 
-    // cyberConnect?.setupDid();
-    await cyberConnect.authenticate();
     setCyberConnect(cyberConnect);
   }, []);
 
   const connectWallet = React.useCallback(async () => {
     const web3Modal = new Web3Modal({
-      network: "mainnet",
+      network: 'mainnet',
       cacheProvider: true,
       providerOptions: {},
     });
 
-    const instance = await web3Modal.connect();
+    const ethProvider = await web3Modal.connect();
+    await ethProvider.enable();
 
-    const provider = new ethers.providers.Web3Provider(instance);
-    const signer = provider.getSigner();
+    const web3Provider = new ethers.providers.Web3Provider(ethProvider);
+    const signer = web3Provider.getSigner();
     const address = await signer.getAddress();
-    const ens = await getEnsByAddress(provider, address);
-    // await initThreeId();
+    const ens = await getEnsByAddress(web3Provider, address);
+    await initCeramic();
+    await initThreeId();
 
     setAddress(address);
     setEns(ens);
-    await initCyberConnect(provider);
-    //await cyberConnect?.authenticate();
-    debugger;
-    // if (window.threeId !== undefined) {
-    //   const didProvider = await getDidProvider(
-    //     window.threeId,
-    //     instance,
-    //     address
-    //   );
-    //   if (didProvider) {
-    //     const ceramicApi = cyberConnect?.ceramicClient as CeramicApi;
-    //     const did = await authenticateUserDid(didProvider, ceramicApi);
-    //     setIdx(new IDX({ autopin: true, ceramic: ceramicApi }));
-    //   }
-    // }
+    await initCyberConnect(web3Provider);
+
+    if (window.threeId !== undefined) {
+      const didProvider = await getDidProvider(window.threeId, ethProvider, address);
+      if (didProvider) {
+        const ceramicApi = window.ceramic;
+        if (ceramicApi !== undefined) {
+          const did = await authenticateUserDid(didProvider, ceramicApi);
+          ceramicApi.did = did;
+          setIdx(new IDX({ autopin: true, ceramic: ceramicApi }));
+        }
+      }
+    }
   }, [initCyberConnect]);
 
   return (

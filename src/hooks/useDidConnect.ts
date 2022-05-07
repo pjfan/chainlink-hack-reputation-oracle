@@ -1,6 +1,7 @@
 import KeyDidResolver from "key-did-resolver";
 import ThreeIdResolver from "@ceramicnetwork/3id-did-resolver";
 import { AbstractConnector } from "@web3-react/abstract-connector";
+import Ceramic from '@ceramicnetwork/http-client';
 import { DID, DIDProvider } from "dids";
 import { EthereumAuthProvider, ThreeIdConnect } from "@3id/connect";
 import type { CeramicApi } from "@ceramicnetwork/common";
@@ -11,8 +12,18 @@ import { ethers } from "ethers";
 declare global {
   interface Window {
     threeId?: ThreeIdConnect;
+    ceramic?: CeramicApi;
   }
 }
+
+export const initCeramic = async (): Promise<CeramicApi> => {
+  if (window.ceramic === undefined) {
+    const ceramic = new Ceramic('https://ceramic-clay.3boxlabs.com');
+    window.ceramic = ceramic;
+  }
+
+  return Promise.resolve(window.ceramic as CeramicApi);
+};
 
 export const initThreeId = async (): Promise<ThreeIdConnect> => {
   if (window.threeId === undefined) {

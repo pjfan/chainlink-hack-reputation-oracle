@@ -21,7 +21,7 @@ const NETWORK = Network.ETH;
 const FIRST = 10; // The number of users in followings/followers list for each fetch
 
 const Home: NextPage = () => {
-  const { address, cyberConnect } = useWeb3();
+  const { address, cyberConnect, idx } = useWeb3();
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
   const [snackbarText, setSnackbarText] = useState<string>('');
 
@@ -208,8 +208,8 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.container}>
-      <p>did: {cyberConnect?.did}</p>
       <Profile />
+      <p>Your DID: {idx?.id}</p>
       <WalletConnectButton />
       {address && (
         <>
