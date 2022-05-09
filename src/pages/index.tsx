@@ -1,35 +1,35 @@
-import type { NextPage } from "next";
-import styles from "./index.module.css";
-import { WalletConnectButton } from "@/components";
-import { useEffect, useState } from "react";
+import type { NextPage } from 'next';
+import styles from './index.module.css';
+import { WalletConnectButton } from '@/components';
+import { useEffect, useState } from 'react';
 
-import Snackbar from "@mui/material/Snackbar";
-import MuiAlert from "@mui/material/Alert";
-import Avatar from "@mui/material/Avatar";
-import LoadingButton from "@mui/lab/LoadingButton";
-import TextField from "@mui/material/TextField";
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
+import Avatar from '@mui/material/Avatar';
+import LoadingButton from '@mui/lab/LoadingButton';
+import TextField from '@mui/material/TextField';
 
-import { followListInfoQuery, searchUserInfoQuery } from "@/utils/query";
-import { FollowListInfoResp, SearchUserInfoResp, Network } from "@/utils/types";
-import { formatAddress, removeDuplicate, isValidAddr } from "@/utils/helper";
-import { useWeb3 } from "@/context/web3Context";
+import { followListInfoQuery, searchUserInfoQuery } from '@/utils/query';
+import { FollowListInfoResp, SearchUserInfoResp, Network } from '@/utils/types';
+import { formatAddress, removeDuplicate, isValidAddr } from '@/utils/helper';
+import { useWeb3 } from '@/context/web3Context';
+import { Profile } from '../components/Profile/Profile';
+import { List, ListItem, ListItemText, Box, Button, ListItemIcon, Typography } from '@mui/material';
 
-const NAME_SPACE = "CyberConnect";
+const NAME_SPACE = 'CyberConnect';
 const NETWORK = Network.ETH;
 const FIRST = 10; // The number of users in followings/followers list for each fetch
 
 const Home: NextPage = () => {
-  const { address, cyberConnect } = useWeb3();
+  const { address, cyberConnect, idx } = useWeb3();
   const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
-  const [snackbarText, setSnackbarText] = useState<string>("");
+  const [snackbarText, setSnackbarText] = useState<string>('');
 
-  const [searchInput, setSearchInput] = useState<string>("");
-  const [searchAddrInfo, setSearchAddrInfo] =
-    useState<SearchUserInfoResp | null>(null);
+  const [searchInput, setSearchInput] = useState<string>('');
+  const [searchAddrInfo, setSearchAddrInfo] = useState<SearchUserInfoResp | null>(null);
   const [searchLoading, setSearchLoading] = useState<boolean>(false);
 
-  const [followListInfo, setFollowListInfo] =
-    useState<FollowListInfoResp | null>(null);
+  const [followListInfo, setFollowListInfo] = useState<FollowListInfoResp | null>(null);
   const [followLoading, setFollowLoading] = useState<boolean>(false);
 
   const fetchSearchAddrInfo = async (toAddr: string) => {
@@ -80,15 +80,13 @@ const Home: NextPage = () => {
                 followingCount: prev.followingCount + 1,
                 followings: {
                   ...prev.followings,
-                  list: removeDuplicate(
-                    prev.followings.list.concat([searchAddrInfo.identity])
-                  ),
+                  list: removeDuplicate(prev.followings.list.concat([searchAddrInfo.identity])),
                 },
               }
             : prev;
         });
 
-        setSnackbarText("Follow Success!");
+        setSnackbarText('Follow Success!');
       } else {
         await cyberConnect.disconnect(searchInput);
 
@@ -123,7 +121,7 @@ const Home: NextPage = () => {
             : prev;
         });
 
-        setSnackbarText("Unfollow Success!");
+        setSnackbarText('Unfollow Success!');
       }
 
       setSnackbarOpen(true);
@@ -162,13 +160,13 @@ const Home: NextPage = () => {
     }
   };
 
-  const fetchMore = async (type: "followings" | "followers") => {
+  const fetchMore = async (type: 'followings' | 'followers') => {
     if (!address || !followListInfo) {
       return;
     }
 
     const params =
-      type === "followers"
+      type === 'followers'
         ? {
             address,
             namespace: NAME_SPACE,
@@ -186,23 +184,19 @@ const Home: NextPage = () => {
 
     const resp = await followListInfoQuery(params);
     if (resp) {
-      type === "followers"
+      type === 'followers'
         ? setFollowListInfo({
             ...followListInfo,
             followers: {
               pageInfo: resp.followers.pageInfo,
-              list: removeDuplicate(
-                followListInfo.followers.list.concat(resp.followers.list)
-              ),
+              list: removeDuplicate(followListInfo.followers.list.concat(resp.followers.list)),
             },
           })
         : setFollowListInfo({
             ...followListInfo,
             followings: {
               pageInfo: resp.followings.pageInfo,
-              list: removeDuplicate(
-                followListInfo.followings.list.concat(resp.followings.list)
-              ),
+              list: removeDuplicate(followListInfo.followings.list.concat(resp.followings.list)),
             },
           });
     }
@@ -214,78 +208,54 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.container}>
-      <div className={styles.logo}>
-        <img
-          src="/cyberconnect-logo.png"
-          alt="CyberConnect Logo"
-          width="100%"
-          height="100%"
-        />
-      </div>
-      <div className={styles.discription}>
-        <p>
-          This is a{" "}
-          <a
-            className={styles.link}
-            href="https://docs.cyberconnect.me/"
-            target="_blank"
-          >
-            CyberConnect
-          </a>{" "}
-          starter app. You can freely use it as a base for your application.{" "}
-        </p>
-        <p>
-          This app displays the current user&apos;s followings and followers. It
-          also allows the user to follow/unfollow a wallet address.
-        </p>
-        <p>Try it yourself!</p>
-      </div>
+      <Profile />
+      <p>Your DID: {idx?.id}</p>
       <WalletConnectButton />
       {address && (
-        <div className={styles.searchSection}>
-          <div className={styles.inputContainer}>
-            <TextField
-              onChange={(e) => handleInputChange(e.target.value)}
-              className={styles.textField}
-              placeholder="Please input the Address you want to follow."
-            />
-            <LoadingButton
-              onClick={handleFollow}
-              disabled={
-                searchLoading ||
-                !isValidAddr(searchInput) ||
-                !address ||
-                address === searchInput
-              }
-              loading={followLoading}
-              className={styles.loadingButton}
-            >
-              {!searchAddrInfo?.connections[0].followStatus.isFollowing
-                ? "Follow"
-                : "Unfollow"}
-            </LoadingButton>
-          </div>
-          {!isValidAddr(searchInput) ? (
-            <div className={styles.error}>Please enter a valid address.</div>
-          ) : address === searchInput ? (
-            <div className={styles.error}>You can’t follow yourself : )</div>
-          ) : (
-            <div className={styles.isFollowed}>
-              This user{" "}
-              {searchAddrInfo?.connections[0].followStatus.isFollowed
-                ? "is following you"
-                : "has not followed you yet"}
+        <>
+          <div className={styles.searchSection}>
+            <div className={styles.inputContainer}>
+              <TextField
+                onChange={(e) => handleInputChange(e.target.value)}
+                className={styles.textField}
+                placeholder="Please input the Address you want to follow."
+              />
+              <LoadingButton
+                onClick={handleFollow}
+                disabled={
+                  searchLoading || !isValidAddr(searchInput) || !address || address === searchInput
+                }
+                loading={followLoading}
+                className={styles.loadingButton}
+              >
+                {!searchAddrInfo?.connections[0].followStatus.isFollowing ? 'Follow' : 'Unfollow'}
+              </LoadingButton>
             </div>
-          )}
-        </div>
+            {!isValidAddr(searchInput) ? (
+              <div className={styles.error}>Please enter a valid address.</div>
+            ) : address === searchInput ? (
+              <div className={styles.error}>You can’t follow yourself : )</div>
+            ) : (
+              <div className={styles.isFollowed}>
+                This user{' '}
+                {searchAddrInfo?.connections[0].followStatus.isFollowed
+                  ? 'is following you'
+                  : 'has not followed you yet'}
+              </div>
+            )}
+          </div>
+        </>
       )}
       {followListInfo && (
         <div className={styles.listsContainer}>
           <div className={styles.list}>
-            <div className={styles.subtitle}>
-              You have <strong>{followListInfo.followerCount}</strong>{" "}
-              followers:
-            </div>
+            <Button>
+              <Typography>Followers</Typography>
+              <Box component="span" sx={{ marginLeft: '.5rem', fontWeight: 'bold' }}>
+                {followListInfo.followerCount}
+              </Box>
+            </Button>
+
             <div className={styles.followList}>
               {followListInfo.followers.list.map((user) => {
                 return (
@@ -298,47 +268,39 @@ const Home: NextPage = () => {
                 );
               })}
               {followListInfo.followers.pageInfo.hasNextPage && (
-                <LoadingButton onClick={() => fetchMore("followers")}>
-                  See More
-                </LoadingButton>
+                <LoadingButton onClick={() => fetchMore('followers')}>See More</LoadingButton>
               )}
             </div>
           </div>
+
           <div className={styles.list}>
-            <div className={styles.subtitle}>
-              You have <strong>{followListInfo.followingCount}</strong>{" "}
-              followings:
-            </div>
-            <div className={styles.followList}>
+            <Button>
+              <Typography>Following</Typography>
+              <Box component="span" sx={{ marginLeft: '.5rem', fontWeight: 'bold' }}>
+                {followListInfo.followingCount}
+              </Box>
+            </Button>
+
+            <List>
               {followListInfo.followings.list.map((user) => {
                 return (
-                  <div key={user.address} className={styles.user}>
-                    <Avatar src={user.avatar} className={styles.avatar} />
-                    <div className={styles.userAddress}>
-                      {user.domain || formatAddress(user.address)}
-                    </div>
-                  </div>
+                  <ListItem>
+                    <ListItemIcon>
+                      <Avatar src={user.avatar} className={styles.avatar} />
+                    </ListItemIcon>
+                    <ListItemText primary={user.domain || formatAddress(user.address)} />
+                  </ListItem>
                 );
               })}
-              {followListInfo.followings.pageInfo.hasNextPage && (
-                <LoadingButton onClick={() => fetchMore("followings")}>
-                  See More
-                </LoadingButton>
-              )}
-            </div>
+            </List>
+            {followListInfo.followings.pageInfo.hasNextPage && (
+              <LoadingButton onClick={() => fetchMore('followings')}>See More</LoadingButton>
+            )}
           </div>
         </div>
       )}
-      <Snackbar
-        open={snackbarOpen}
-        autoHideDuration={6000}
-        onClose={() => setSnackbarOpen(false)}
-      >
-        <MuiAlert
-          onClose={() => setSnackbarOpen(false)}
-          severity="success"
-          sx={{ width: "100%" }}
-        >
+      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
+        <MuiAlert onClose={() => setSnackbarOpen(false)} severity="success" sx={{ width: '100%' }}>
           {snackbarText}
         </MuiAlert>
       </Snackbar>
