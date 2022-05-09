@@ -1,6 +1,7 @@
 import { Box, Grid } from '@mui/material';
 import React from 'react';
 import { ProfilePicAvator } from './ProfilePicAvatar';
+import { updateProfile, getProfile } from '../../hooks/useBasicProfile';
 
 export const Profile: React.FC = () => {
   return (
