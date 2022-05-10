@@ -1,7 +1,7 @@
-import { BasicProfile } from "@datamodels/identity-profile-basic";
-import { StreamID } from "@ceramicnetwork/streamid";
-import { AccountID } from "caip";
-import type { IDX } from "@ceramicstudio/idx";
+import { BasicProfile } from '@datamodels/identity-profile-basic';
+import { StreamID } from '@ceramicnetwork/streamid';
+import { AccountID } from 'caip';
+import type { IDX } from '@ceramicstudio/idx';
 
 export type DIDData = {
   accounts: Array<AccountID>;
@@ -14,12 +14,12 @@ export const updateProfile = async (
   name: string,
   description: string
 ): Promise<StreamID | null> => {
-  return (await idx.set("basicProfile", { name, description })) ?? null;
+  return (await idx.set('basicProfile', { name, description })) ?? null;
 };
 
 export const getProfile = async (idx: IDX): Promise<BasicProfile | null> => {
   try {
-    return (await idx.get<BasicProfile>("basicProfile")) ?? null;
+    return (await idx.get<BasicProfile>('basicProfile')) ?? null;
   } catch (err) {
     return null;
   }

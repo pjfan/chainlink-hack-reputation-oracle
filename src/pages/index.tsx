@@ -13,7 +13,8 @@ import { followListInfoQuery, searchUserInfoQuery } from '@/utils/query';
 import { FollowListInfoResp, SearchUserInfoResp, Network } from '@/utils/types';
 import { formatAddress, removeDuplicate, isValidAddr } from '@/utils/helper';
 import { useWeb3 } from '@/context/web3Context';
-import { Profile } from '../components/Profile/Profile';
+import { ProfileInfoCard } from '../components/Profile/ProfileInfoCard';
+import { ReputationContent } from '../components/Profile/ReputationContent';
 import { List, ListItem, ListItemText, Box, Button, ListItemIcon, Typography } from '@mui/material';
 
 const NAME_SPACE = 'CyberConnect';
@@ -208,11 +209,11 @@ const Home: NextPage = () => {
 
   return (
     <div className={styles.container}>
-      <Profile />
-      <p>Your DID: {idx?.id}</p>
+      <ProfileInfoCard idx={idx} />
       <WalletConnectButton />
       {address && (
         <>
+          <ReputationContent />
           <div className={styles.searchSection}>
             <div className={styles.inputContainer}>
               <TextField
