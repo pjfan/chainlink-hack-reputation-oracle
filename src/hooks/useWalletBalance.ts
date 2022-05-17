@@ -22,11 +22,11 @@ export interface TokenBalance {
 
 export type MoralisChainOptions = "eth" | "0x1" | "ropsten" | "0x3" | "rinkeby" | "0x4" | "goerli" | "0x5" | "kovan" | "0x2a" | "polygon" | "0x89" | "mumbai" | "0x13881" | "bsc" | "0x38" | "bsc testnet" | "0x61" | "avalanche" | "0xa86a" | "avalanche testnet" | "0xa869" | "fantom" | "0xfa" | undefined;
 
-export const useWalletBalance = (address: string, chain: MoralisChainOptions): object => {
+export const useWalletBalance = (address: string, chain: MoralisChainOptions): WalletBalance[] | null | undefined => {
   const { account, token } = useMoralisWeb3Api();
   const { isInitialized } = useMoralis();
   
-  const [assets, setAssets] = useState<WalletBalance|null|undefined>(undefined);
+  const [assets, setAssets] = useState<WalletBalance[]|null|undefined>(undefined);
   
   useEffect(() => {
     if (isInitialized) {
@@ -43,7 +43,7 @@ export const useWalletBalance = (address: string, chain: MoralisChainOptions): o
     return price
   }
 
-  const getTokenBalances = async ():Promise<WalletBalance | null> => {
+  const getTokenBalances = async ():Promise<WalletBalance[] | null> => {
     // fetch token balance from address
     const tokens: TokenBalance[] | null = await account.getTokenBalances({"address": address, "chain": chain}).catch((err) => {console.log(err); return null;});
     console.log("Fetched all ERC20 balances for chain: " + chain);
@@ -78,8 +78,8 @@ export const useWalletBalance = (address: string, chain: MoralisChainOptions): o
       }
     }
 
-    return Object.fromEntries(tokenBalances);
+    return Array.from(tokenBalances.values());
   }
 
-  return {getTokenBalances, assets};
+  return assets;
 };
