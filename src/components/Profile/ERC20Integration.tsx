@@ -63,8 +63,7 @@ export const ERC20Integration: React.FC<ERC20IntegrationProps> = (props: ERC20In
   ];
 
   return (
-    <div style={{ width: "65vw", padding: "15px" }}>
-      <h1>💰Token Balances</h1>
+    <div>
       <Skeleton loading={!assets}>
         <Table
           dataSource={assets!}
