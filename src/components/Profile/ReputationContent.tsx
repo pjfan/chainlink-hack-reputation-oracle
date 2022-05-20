@@ -7,19 +7,27 @@ export const ReputationContent: React.FC = () => {
   return (
     <Grid container spacing={2}>
       <Grid item xs={6} md={4}>
-        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>ERC20 integration<ERC20Integration chain="" address=""></ERC20Integration></Box>
+        <Box sx={{ backgroundColor: 'primary.main' }}>
+          ERC20 integration<ERC20Integration chain="kovan" address="0xf03E58D404e74E5A8480f033e13ADC4aEAA89873"></ERC20Integration>
+        </Box>
       </Grid>
 
       <Grid item xs={6} md={4}>
-        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>Address history length</Box>
+        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>
+          Address history length
+        </Box>
       </Grid>
 
       <Grid item xs={6} md={4}>
-        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>Twitter verification</Box>
+        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>
+          Twitter verification
+        </Box>
       </Grid>
 
       <Grid item xs={6} md={4}>
-        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>Github verification</Box>
+        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>
+          Github verification
+        </Box>
       </Grid>
 
       <Grid item xs={6} md={4}>
@@ -27,7 +35,9 @@ export const ReputationContent: React.FC = () => {
       </Grid>
 
       <Grid item xs={6} md={4}>
-        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>POAP integration</Box>
+        <Box sx={{ width: 200, height: 200, backgroundColor: 'primary.main' }}>
+          POAP integration
+        </Box>
       </Grid>
     </Grid>
   );

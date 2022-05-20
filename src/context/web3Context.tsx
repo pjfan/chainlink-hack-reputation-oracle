@@ -49,7 +49,7 @@ export const Web3ContextProvider: React.FC = ({ children }) => {
 
   const connectWallet = React.useCallback(async () => {
     const web3Modal = new Web3Modal({
-      network: 'mainnet',
+      network: 'kovan',
       cacheProvider: true,
       providerOptions: {},
     });
