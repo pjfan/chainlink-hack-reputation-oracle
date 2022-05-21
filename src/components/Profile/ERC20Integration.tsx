@@ -1,6 +1,7 @@
 import React from 'react';
 import { Skeleton, Table } from 'antd';
-import { MoralisChainOptions, useWalletBalance, WalletBalance } from '../../hooks/useWalletBalance';
+import { useWalletBalance, WalletBalance } from '../../hooks/useWalletBalance';
+import { MoralisChainOptions } from '../../hooks/useMoralisChainOptions';
 
 export interface ERC20IntegrationProps {
   address: string;
