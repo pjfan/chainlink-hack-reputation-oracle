@@ -1,4 +1,3 @@
-
 export type MoralisChainOptions =
   | 'eth'
   | '0x1'

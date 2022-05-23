@@ -13,15 +13,15 @@ function MyApp({ Component, pageProps }: AppProps) {
       {MORALIS_APP_ID && MORALIS_SERVER_URL ? (
         <StyledEngineProvider injectFirst>
           <Web3ContextProvider>
-              <SearchContextProvider>
-            <MoralisProvider
-              serverUrl={MORALIS_SERVER_URL}
-              appId={MORALIS_APP_ID}
-              initializeOnMount
-            >
+            <SearchContextProvider>
+              <MoralisProvider
+                serverUrl={MORALIS_SERVER_URL}
+                appId={MORALIS_APP_ID}
+                initializeOnMount
+              >
                 <Component {...pageProps} />
-            </MoralisProvider>
-              </SearchContextProvider>
+              </MoralisProvider>
+            </SearchContextProvider>
           </Web3ContextProvider>
         </StyledEngineProvider>
       ) : (
