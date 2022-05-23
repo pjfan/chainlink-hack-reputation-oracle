@@ -33,7 +33,7 @@ export const useWalletBalance = (
     if (isInitialized && address !== '') {
       getTokenBalances().then((balance) => setAssets(balance));
     }
-  }, [address]);
+  }, [address, chain]);
 
   const getTokenPrice = async (
     inputToken: TokenBalance,
