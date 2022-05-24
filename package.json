@@ -17,6 +17,7 @@
     "@mui/material": "^5.2.8",
     "@walletconnect/web3-provider": "^1.7.0",
     "ethers": "^5.5.3",
+    "moment": "^2.29.3",
     "moralis": "^1.7.0",
     "next": "12.0.7",
     "react": "17.0.2",
