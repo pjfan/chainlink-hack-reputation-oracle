@@ -10,7 +10,7 @@ export const Search: React.FC = () => {
     <Box sx={{ display: 'flex' }}>
       <TextField
         fullWidth
-        defaultValue="Search any eth address"
+        placeholder="Search any eth address"
         type="search"
         variant="filled"
         onChange={(e) => {
