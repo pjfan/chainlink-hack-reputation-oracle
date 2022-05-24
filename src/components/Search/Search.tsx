@@ -1,13 +1,20 @@
-import { FormControl, Box, TextField, InputLabel, Select, MenuItem } from '@mui/material';
-import React, { useState, useEffect, useContext, createContext } from 'react';
-import { ChainSelectionDropDown } from './ChainSelectionDropDown';
-import { useSearchContext } from 'src/hooks/useSearch';
+import {
+  FormControl,
+  Box,
+  TextField,
+  InputLabel,
+  Select,
+  MenuItem,
+} from "@mui/material";
+import React, { useState, useEffect, useContext, createContext } from "react";
+import { ChainSelectionDropDown } from "./ChainSelectionDropDown";
+import { useSearchContext } from "src/hooks/useSearch";
 
 export const Search: React.FC = () => {
   const { setAddress } = useSearchContext();
 
   return (
-    <Box sx={{ display: 'flex' }}>
+    <Box sx={{ display: "flex" }}>
       <TextField
         fullWidth
         placeholder="Search any eth address"

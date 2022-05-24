@@ -1,21 +1,26 @@
-import React from 'react';
-import { useWalletBalance, WalletBalance } from '../../hooks/useWalletBalance';
-import { MoralisChainOptions } from '../../hooks/useMoralisChainOptions';
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
+import React from "react";
+import { useWalletBalance, WalletBalance } from "../../hooks/useWalletBalance";
+import { MoralisChainOptions } from "../../hooks/useMoralisChainOptions";
+import Table from "@mui/material/Table";
+import TableBody from "@mui/material/TableBody";
+import TableCell from "@mui/material/TableCell";
+import TableContainer from "@mui/material/TableContainer";
+import TableHead from "@mui/material/TableHead";
+import TableRow from "@mui/material/TableRow";
+import Paper from "@mui/material/Paper";
 
 export interface ERC20IntegrationProps {
   address: string;
   chain: MoralisChainOptions;
 }
 
-export const ERC20Integration: React.FC<ERC20IntegrationProps> = (props: ERC20IntegrationProps) => {
-  const assets: WalletBalance[] | null | undefined = useWalletBalance(props.address, props.chain);
+export const ERC20Integration: React.FC<ERC20IntegrationProps> = (
+  props: ERC20IntegrationProps
+) => {
+  const assets: WalletBalance[] | null | undefined = useWalletBalance(
+    props.address,
+    props.chain
+  );
 
   return (
     <TableContainer component={Paper}>
@@ -34,17 +39,20 @@ export const ERC20Integration: React.FC<ERC20IntegrationProps> = (props: ERC20In
         <TableBody>
           {assets?.map((row: WalletBalance) => (
             <TableRow
-            key={row.token_address}
-            sx={{ '&:last-child td, &:last-child th': { border: 0 } }}
+              key={row.token_address}
+              sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
             >
               <TableCell align="left">
                 <img
-                  src={row.logo || 'https://etherscan.io/images/main/empty-token.png'}
+                  src={
+                    row.logo ||
+                    "https://etherscan.io/images/main/empty-token.png"
+                  }
                   alt="nologo"
                   width="28px"
                   height="28px"
                 />
-              </TableCell>  
+              </TableCell>
               <TableCell component="th" scope="row">
                 {row.symbol}
               </TableCell>
@@ -53,7 +61,7 @@ export const ERC20Integration: React.FC<ERC20IntegrationProps> = (props: ERC20In
               <TableCell align="left">{row.price}</TableCell>
               <TableCell align="left">{row.value}</TableCell>
               <TableCell align="left">{row.token_address}</TableCell>
-            </TableRow>  
+            </TableRow>
           ))}
         </TableBody>
       </Table>
