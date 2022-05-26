@@ -17,34 +17,42 @@ export interface POAPListProps {
   
 export const POAPList: React.FC<POAPListProps> = (props: POAPListProps) => {
     const userAddress = props.address;
-    const { account } = useMoralisWeb3Api();
+    const Web3Api = useMoralisWeb3Api();
     const [poaps, setPoaps] = useState<any>();
     const [otherNfts, setOtherNfts] = useState<any>();
-    const [isLoading, setIsLoading] = useState<boolean>(true);
+    // const [isLoading, setIsLoading] = useState<boolean>(true);
     // const [nftModalInfo, setNftModalInfo] = useState<any>(null);
+    
+    // const fetchNFTs = async () => {
+    //   const data = await account.getNFTs({ chain: "eth", address: userAddress });
+    //   console.log(res)
+    // };
+    // console.log(res);
 
     useEffect(() => {
         (async () => {
             // setIsLoading(true);
-            const res = await account.getNFTs({ address: userAddress });
-            if (res.result) {
-                const nfts = res.result.map((nft) => ({
-                    ...nft,
-                    metadata: nft.metadata ? JSON.parse(nft.metadata) : null,
-                }));
+            const res = userAddress ? await Web3Api.account.getNFTs({ chain: "eth", address: userAddress }) : null;
+            if (res?.result) {
+              console.log(res.result)
+              const nfts = res.result.map((nft) => ({
+                  ...nft,
+                  metadata: nft.metadata ? JSON.parse(nft.metadata) : null,
+              }));
 
-                const _poaps = nfts.filter((nft) =>
-                    nft.metadata?.tags?.includes("poap")
-                );
-                const _otherNfts = nfts.filter(
-                    (nft) => !nft.metadata?.tags?.includes("poap")
-                );
-                setPoaps(_poaps);
-                setOtherNfts(_otherNfts);
-                // setIsLoading(false);
+              const _poaps = nfts.filter((nft) =>
+                  nft.metadata?.tags?.includes("poap")
+              );
+              const _otherNfts = nfts.filter(
+                  (nft) => !nft.metadata?.tags?.includes("poap")
+              );
+              setPoaps(_poaps);
+              setOtherNfts(_otherNfts);
+
+              // setIsLoading(false);
             }
         })();
-    }, [userAddress, account]);
+    }, [userAddress]);
 
     const getName = (nft: any) => nft.metadata?.name || nft.name || null;
 
