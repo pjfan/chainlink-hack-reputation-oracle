@@ -8,6 +8,7 @@ export interface WalletBalance {
   price?: number;
   value?: number;
   token_address: string;
+  logo?: string;
 }
 
 export interface TokenBalance {
@@ -69,6 +70,7 @@ export const useWalletBalance = (
     const tokenBalances: Map<String, WalletBalance> = new Map();
     for (const token of tokens!) {
       const tokenInfo: WalletBalance = {
+        logo: token.logo,
         name: token.name,
         symbol: token.symbol,
         balance: parseFloat(token.balance) * Math.pow(10, -1 * parseFloat(token.decimals)),
