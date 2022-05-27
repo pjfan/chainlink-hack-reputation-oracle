@@ -18,12 +18,11 @@ export const ReputationContent: React.FC = () => {
           <Box>
             ERC20 integration
             <ERC20Integration chain={network} address={address} />
-            POAP integration
-            <POAPList address={address} />
+            <POAPList chain={network} address={address} />
           </Box>
           {/* <Box>
             POAP integration
-            <POAPList address={address} />
+            <POAPList chain={network} address={address} />
           </Box> */}
         </Box>
       </Grid>
@@ -45,11 +44,11 @@ export const ReputationContent: React.FC = () => {
         </Box>
       </Grid>
 
-      <Grid item xs={6} md={4}>
+      {/* <Grid item xs={6} md={4}>
         <Box sx={{ width: 200, height: 200, backgroundColor: "primary.main" }}>
           NFT collections
         </Box>
-      </Grid>
+      </Grid> */}
 
       {/* <Grid item xs={6} md={4}>
         <Box sx={{ width: 200, height: 200, backgroundColor: "primary.main" }}>
