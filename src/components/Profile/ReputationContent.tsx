@@ -78,9 +78,9 @@ export const ReputationContent: React.FC = () => {
         <FollowList address={address} network='ETH' />
       </Grid>
 
-      {/* <Grid item xs={12}>
+      <Grid item xs={12}>
         <POAPList address={address} chain={network} />
-      </Grid> */}
+      </Grid>
 
       <Grid item xs={12}>
         <ERC20Integration chain={network} address={address} />
