@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { useMoralisWeb3Api, useMoralisWeb3ApiCall, useMoralis } from 'react-moralis';
 import moment from 'moment';
 import { MoralisChainOptions } from './useMoralisChainOptions';
+import { useSearchContext } from '@/hooks/useSearch';
 
 export interface ActivityInfo {
   transactionsPerMonth: number;
@@ -17,8 +18,9 @@ export const useActivity = (
 ): ActivityInfo | undefined => {
   const { account } = useMoralisWeb3Api();
   const { isInitialized } = useMoralis();
+  const { setAddressActivityResult } = useSearchContext();
 
-  const {
+  let {
     fetch: getPastSixMo,
     data: pastSixMo,
     error: error1,
@@ -28,7 +30,7 @@ export const useActivity = (
     address: address,
   });
 
-  const {
+  let {
     fetch: getHistory,
     data: history,
     error: error2,
@@ -42,7 +44,11 @@ export const useActivity = (
 
   useEffect(() => {
     if (isInitialized && address !== '') {
-      getActivityInfo().then((activityInfo) => setActivityInfo(activityInfo));
+      setAddressActivityResult(false);
+      getActivityInfo().then((activityInfo) => {
+        setActivityInfo(activityInfo);
+        setAddressActivityResult(true);
+      });
     }
   }, [address, chain]);
 

@@ -15,7 +15,9 @@ import { formatAddress, removeDuplicate, isValidAddr } from '@/utils/helper';
 import { useWeb3 } from '@/context/web3Context';
 import { ProfileInfoCard } from '../components/Profile/ProfileInfoCard';
 import { ReputationContent } from '../components/Profile/ReputationContent';
-import { List, ListItem, ListItemText, Box, Button, ListItemIcon, Typography } from '@mui/material';
+import { Paper, List, ListItem, ListItemText, Box, Button, ListItemIcon, Typography } from '@mui/material';
+import { ResponsiveAppBar } from '../components/AppBar/AppBar';
+import { FollowList } from '@/components/Follow/FollowList';
 
 const NAME_SPACE = 'CyberConnect';
 const NETWORK = Network.ETH;
@@ -23,289 +25,302 @@ const FIRST = 10; // The number of users in followings/followers list for each f
 
 const Home: NextPage = () => {
   const { address, cyberConnect, idx } = useWeb3();
-  const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
-  const [snackbarText, setSnackbarText] = useState<string>('');
+  // const [snackbarOpen, setSnackbarOpen] = useState<boolean>(false);
+  // const [snackbarText, setSnackbarText] = useState<string>('');
 
-  const [searchInput, setSearchInput] = useState<string>('');
-  const [searchAddrInfo, setSearchAddrInfo] = useState<SearchUserInfoResp | null>(null);
-  const [searchLoading, setSearchLoading] = useState<boolean>(false);
+  // const [searchInput, setSearchInput] = useState<string>('');
+  // const [searchAddrInfo, setSearchAddrInfo] = useState<SearchUserInfoResp | null>(null);
+  // const [searchLoading, setSearchLoading] = useState<boolean>(false);
 
-  const [followListInfo, setFollowListInfo] = useState<FollowListInfoResp | null>(null);
-  const [followLoading, setFollowLoading] = useState<boolean>(false);
+  // const [followListInfo, setFollowListInfo] = useState<FollowListInfoResp | null>(null);
+  // const [followLoading, setFollowLoading] = useState<boolean>(false);
 
-  const fetchSearchAddrInfo = async (toAddr: string) => {
-    const resp = await searchUserInfoQuery({
-      fromAddr: address,
-      toAddr,
-      network: NETWORK,
-    });
-    if (resp) {
-      setSearchAddrInfo(resp);
-    }
-  };
+  // const fetchSearchAddrInfo = async (toAddr: string) => {
+  //   const resp = await searchUserInfoQuery({
+  //     fromAddr: address,
+  //     toAddr,
+  //     network: NETWORK,
+  //   });
+  //   if (resp) {
+  //     setSearchAddrInfo(resp);
+  //   }
+  // };
 
-  const handleFollow = async () => {
-    if (!cyberConnect || !searchAddrInfo) {
-      return;
-    }
+  // const handleFollow = async () => {
+  //   if (!cyberConnect || !searchAddrInfo) {
+  //     return;
+  //   }
 
-    try {
-      setFollowLoading(true);
+  //   try {
+  //     setFollowLoading(true);
 
-      // Execute connect if the current user is not following the search addrress.
-      if (!searchAddrInfo.connections[0].followStatus.isFollowing) {
-        await cyberConnect.connect(searchInput);
+  //     // Execute connect if the current user is not following the search addrress.
+  //     if (!searchAddrInfo.connections[0].followStatus.isFollowing) {
+  //       await cyberConnect.connect(searchInput);
 
-        // Overwrite the local status of isFollowing
-        setSearchAddrInfo((prev) => {
-          return !!prev
-            ? {
-                ...prev,
-                connections: [
-                  {
-                    followStatus: {
-                      ...prev.connections[0].followStatus,
-                      isFollowing: true,
-                    },
-                  },
-                ],
-              }
-            : prev;
-        });
+  //       // Overwrite the local status of isFollowing
+  //       setSearchAddrInfo((prev) => {
+  //         return !!prev
+  //           ? {
+  //               ...prev,
+  //               connections: [
+  //                 {
+  //                   followStatus: {
+  //                     ...prev.connections[0].followStatus,
+  //                     isFollowing: true,
+  //                   },
+  //                 },
+  //               ],
+  //             }
+  //           : prev;
+  //       });
 
-        // Add the new following to the current user followings list
-        setFollowListInfo((prev) => {
-          return !!prev
-            ? {
-                ...prev,
-                followingCount: prev.followingCount + 1,
-                followings: {
-                  ...prev.followings,
-                  list: removeDuplicate(prev.followings.list.concat([searchAddrInfo.identity])),
-                },
-              }
-            : prev;
-        });
+  //       // Add the new following to the current user followings list
+  //       setFollowListInfo((prev) => {
+  //         return !!prev
+  //           ? {
+  //               ...prev,
+  //               followingCount: prev.followingCount + 1,
+  //               followings: {
+  //                 ...prev.followings,
+  //                 list: removeDuplicate(prev.followings.list.concat([searchAddrInfo.identity])),
+  //               },
+  //             }
+  //           : prev;
+  //       });
 
-        setSnackbarText('Follow Success!');
-      } else {
-        await cyberConnect.disconnect(searchInput);
+  //       setSnackbarText('Follow Success!');
+  //     } else {
+  //       await cyberConnect.disconnect(searchInput);
 
-        setSearchAddrInfo((prev) => {
-          return !!prev
-            ? {
-                ...prev,
-                connections: [
-                  {
-                    followStatus: {
-                      ...prev.connections[0].followStatus,
-                      isFollowing: false,
-                    },
-                  },
-                ],
-              }
-            : prev;
-        });
+  //       setSearchAddrInfo((prev) => {
+  //         return !!prev
+  //           ? {
+  //               ...prev,
+  //               connections: [
+  //                 {
+  //                   followStatus: {
+  //                     ...prev.connections[0].followStatus,
+  //                     isFollowing: false,
+  //                   },
+  //                 },
+  //               ],
+  //             }
+  //           : prev;
+  //       });
 
-        setFollowListInfo((prev) => {
-          return !!prev
-            ? {
-                ...prev,
-                followingCount: prev.followingCount - 1,
-                followings: {
-                  ...prev.followings,
-                  list: prev.followings.list.filter((user) => {
-                    return user.address !== searchAddrInfo.identity.address;
-                  }),
-                },
-              }
-            : prev;
-        });
+  //       setFollowListInfo((prev) => {
+  //         return !!prev
+  //           ? {
+  //               ...prev,
+  //               followingCount: prev.followingCount - 1,
+  //               followings: {
+  //                 ...prev.followings,
+  //                 list: prev.followings.list.filter((user) => {
+  //                   return user.address !== searchAddrInfo.identity.address;
+  //                 }),
+  //               },
+  //             }
+  //           : prev;
+  //       });
 
-        setSnackbarText('Unfollow Success!');
-      }
+  //       setSnackbarText('Unfollow Success!');
+  //     }
 
-      setSnackbarOpen(true);
-    } catch (e) {
-      console.error(e);
-    } finally {
-      setFollowLoading(false);
-    }
-  };
+  //     setSnackbarOpen(true);
+  //   } catch (e) {
+  //     console.error(e);
+  //   } finally {
+  //     setFollowLoading(false);
+  //   }
+  // };
 
-  const handleInputChange = async (value: string) => {
-    setSearchInput(value);
+  // const handleInputChange = async (value: string) => {
+  //   setSearchInput(value);
 
-    if (isValidAddr(value) && address && address !== searchInput) {
-      setSearchLoading(true);
-      await fetchSearchAddrInfo(value);
-    }
-    setSearchLoading(false);
-  };
+  //   if (isValidAddr(value) && address && address !== searchInput) {
+  //     setSearchLoading(true);
+  //     await fetchSearchAddrInfo(value);
+  //   }
+  //   setSearchLoading(false);
+  // };
 
-  // Get the current user followings and followers list
-  const initFollowListInfo = async () => {
-    if (!address) {
-      return;
-    }
+  // // Get the current user followings and followers list
+  // const initFollowListInfo = async () => {
+  //   if (!address) {
+  //     return;
+  //   }
 
-    const resp = await followListInfoQuery({
-      address,
-      namespace: NAME_SPACE,
-      network: NETWORK,
-      followingFirst: FIRST,
-      followerFirst: FIRST,
-    });
-    if (resp) {
-      setFollowListInfo(resp);
-    }
-  };
+  //   const resp = await followListInfoQuery({
+  //     address,
+  //     namespace: NAME_SPACE,
+  //     network: NETWORK,
+  //     followingFirst: FIRST,
+  //     followerFirst: FIRST,
+  //   });
+  //   if (resp) {
+  //     setFollowListInfo(resp);
+  //   }
+  // };
 
-  const fetchMore = async (type: 'followings' | 'followers') => {
-    if (!address || !followListInfo) {
-      return;
-    }
+  // const fetchMore = async (type: 'followings' | 'followers') => {
+  //   if (!address || !followListInfo) {
+  //     return;
+  //   }
 
-    const params =
-      type === 'followers'
-        ? {
-            address,
-            namespace: NAME_SPACE,
-            network: NETWORK,
-            followerFirst: FIRST,
-            followerAfter: followListInfo.followers.pageInfo.endCursor,
-          }
-        : {
-            address,
-            namespace: NAME_SPACE,
-            network: NETWORK,
-            followingFirst: FIRST,
-            followingAfter: followListInfo.followings.pageInfo.endCursor,
-          };
+  //   const params =
+  //     type === 'followers'
+  //       ? {
+  //           address,
+  //           namespace: NAME_SPACE,
+  //           network: NETWORK,
+  //           followerFirst: FIRST,
+  //           followerAfter: followListInfo.followers.pageInfo.endCursor,
+  //         }
+  //       : {
+  //           address,
+  //           namespace: NAME_SPACE,
+  //           network: NETWORK,
+  //           followingFirst: FIRST,
+  //           followingAfter: followListInfo.followings.pageInfo.endCursor,
+  //         };
 
-    const resp = await followListInfoQuery(params);
-    if (resp) {
-      type === 'followers'
-        ? setFollowListInfo({
-            ...followListInfo,
-            followers: {
-              pageInfo: resp.followers.pageInfo,
-              list: removeDuplicate(followListInfo.followers.list.concat(resp.followers.list)),
-            },
-          })
-        : setFollowListInfo({
-            ...followListInfo,
-            followings: {
-              pageInfo: resp.followings.pageInfo,
-              list: removeDuplicate(followListInfo.followings.list.concat(resp.followings.list)),
-            },
-          });
-    }
-  };
+  //   const resp = await followListInfoQuery(params);
+  //   if (resp) {
+  //     type === 'followers'
+  //       ? setFollowListInfo({
+  //           ...followListInfo,
+  //           followers: {
+  //             pageInfo: resp.followers.pageInfo,
+  //             list: removeDuplicate(followListInfo.followers.list.concat(resp.followers.list)),
+  //           },
+  //         })
+  //       : setFollowListInfo({
+  //           ...followListInfo,
+  //           followings: {
+  //             pageInfo: resp.followings.pageInfo,
+  //             list: removeDuplicate(followListInfo.followings.list.concat(resp.followings.list)),
+  //           },
+  //         });
+  //   }
+  // };
 
-  useEffect(() => {
-    initFollowListInfo();
-  }, [address]);
+  // useEffect(() => {
+  //   initFollowListInfo();
+  // }, [address]);
 
   return (
-    <div className={styles.container}>
-      <ProfileInfoCard idx={idx} />
-      <WalletConnectButton />
-      {address && (
-        <>
-          <ReputationContent />
-          <div className={styles.searchSection}>
-            <div className={styles.inputContainer}>
-              <TextField
-                onChange={(e) => handleInputChange(e.target.value)}
-                className={styles.textField}
-                placeholder="Please input the Address you want to follow."
-              />
-              <LoadingButton
-                onClick={handleFollow}
-                disabled={
-                  searchLoading || !isValidAddr(searchInput) || !address || address === searchInput
-                }
-                loading={followLoading}
-                className={styles.loadingButton}
-              >
-                {!searchAddrInfo?.connections[0].followStatus.isFollowing ? 'Follow' : 'Unfollow'}
-              </LoadingButton>
-            </div>
-            {!isValidAddr(searchInput) ? (
-              <div className={styles.error}>Please enter a valid address.</div>
-            ) : address === searchInput ? (
-              <div className={styles.error}>You can’t follow yourself : )</div>
-            ) : (
-              <div className={styles.isFollowed}>
-                This user{' '}
-                {searchAddrInfo?.connections[0].followStatus.isFollowed
-                  ? 'is following you'
-                  : 'has not followed you yet'}
+    <Paper>
+      <div className={styles.container}>
+        <ResponsiveAppBar />
+        <ReputationContent />
+        {/* <ProfileInfoCard idx={idx} /> */}
+        {/* {address && (
+          <>
+            <div className={styles.searchSection}>
+              <div className={styles.inputContainer}>
+                <TextField
+                  onChange={(e) => handleInputChange(e.target.value)}
+                  className={styles.textField}
+                  placeholder="Please input the Address you want to follow."
+                />
+                <LoadingButton
+                  onClick={handleFollow}
+                  disabled={
+                    searchLoading ||
+                    !isValidAddr(searchInput) ||
+                    !address ||
+                    address === searchInput
+                  }
+                  loading={followLoading}
+                  className={styles.loadingButton}
+                >
+                  {!searchAddrInfo?.connections[0].followStatus.isFollowing ? 'Follow' : 'Unfollow'}
+                </LoadingButton>
               </div>
-            )}
-          </div>
-        </>
-      )}
-      {followListInfo && (
-        <div className={styles.listsContainer}>
-          <div className={styles.list}>
-            <Button>
-              <Typography>Followers</Typography>
-              <Box component="span" sx={{ marginLeft: '.5rem', fontWeight: 'bold' }}>
-                {followListInfo.followerCount}
-              </Box>
-            </Button>
+              {!isValidAddr(searchInput) ? (
+                <div className={styles.error}>Please enter a valid address.</div>
+              ) : address === searchInput ? (
+                <div className={styles.error}>You can’t follow yourself : )</div>
+              ) : (
+                <div className={styles.isFollowed}>
+                  This user{' '}
+                  {searchAddrInfo?.connections[0].followStatus.isFollowed
+                    ? 'is following you'
+                    : 'has not followed you yet'}
+                </div>
+              )}
+            </div>
+          </>
+        )}
+        {followListInfo && (
+          <div className={styles.listsContainer}>
+            <div className={styles.list}>
+              <Button>
+                <Typography>Followers</Typography>
+                <Box component="span" sx={{ marginLeft: '.5rem', fontWeight: 'bold' }}>
+                  {followListInfo.followerCount}
+                </Box>
+              </Button>
 
-            <div className={styles.followList}>
-              {followListInfo.followers.list.map((user) => {
-                return (
-                  <div key={user.address} className={styles.user}>
-                    <Avatar src={user.avatar} className={styles.avatar} />
-                    <div className={styles.userAddress}>
-                      {user.domain || formatAddress(user.address)}
+              <div className={styles.followList}>
+                {followListInfo.followers.list.map((user) => {
+                  return (
+                    <div key={user.address} className={styles.user}>
+                      <Avatar src={user.avatar} className={styles.avatar} />
+                      <div className={styles.userAddress}>
+                        {user.domain || formatAddress(user.address)}
+                      </div>
                     </div>
-                  </div>
-                );
-              })}
-              {followListInfo.followers.pageInfo.hasNextPage && (
-                <LoadingButton onClick={() => fetchMore('followers')}>See More</LoadingButton>
+                  );
+                })}
+                {followListInfo.followers.pageInfo.hasNextPage && (
+                  <LoadingButton onClick={() => fetchMore('followers')}>See More</LoadingButton>
+                )}
+              </div>
+            </div>
+
+            <div className={styles.list}>
+              <Button>
+                <Typography>Following</Typography>
+                <Box component="span" sx={{ marginLeft: '.5rem', fontWeight: 'bold' }}>
+                  {followListInfo.followingCount}
+                </Box>
+              </Button>
+
+              <List>
+                {followListInfo.followings.list.map((user) => {
+                  return (
+                    <ListItem>
+                      <ListItemIcon>
+                        <Avatar src={user.avatar} className={styles.avatar} />
+                      </ListItemIcon>
+                      <ListItemText primary={user.domain || formatAddress(user.address)} />
+                    </ListItem>
+                  );
+                })}
+              </List>
+              {followListInfo.followings.pageInfo.hasNextPage && (
+                <LoadingButton onClick={() => fetchMore('followings')}>See More</LoadingButton>
               )}
             </div>
           </div>
-
-          <div className={styles.list}>
-            <Button>
-              <Typography>Following</Typography>
-              <Box component="span" sx={{ marginLeft: '.5rem', fontWeight: 'bold' }}>
-                {followListInfo.followingCount}
-              </Box>
-            </Button>
-
-            <List>
-              {followListInfo.followings.list.map((user) => {
-                return (
-                  <ListItem>
-                    <ListItemIcon>
-                      <Avatar src={user.avatar} className={styles.avatar} />
-                    </ListItemIcon>
-                    <ListItemText primary={user.domain || formatAddress(user.address)} />
-                  </ListItem>
-                );
-              })}
-            </List>
-            {followListInfo.followings.pageInfo.hasNextPage && (
-              <LoadingButton onClick={() => fetchMore('followings')}>See More</LoadingButton>
-            )}
-          </div>
-        </div>
-      )}
-      <Snackbar open={snackbarOpen} autoHideDuration={6000} onClose={() => setSnackbarOpen(false)}>
-        <MuiAlert onClose={() => setSnackbarOpen(false)} severity="success" sx={{ width: '100%' }}>
-          {snackbarText}
-        </MuiAlert>
-      </Snackbar>
-    </div>
+        )}
+        <Snackbar
+          open={snackbarOpen}
+          autoHideDuration={6000}
+          onClose={() => setSnackbarOpen(false)}
+        >
+          <MuiAlert
+            onClose={() => setSnackbarOpen(false)}
+            severity="success"
+            sx={{ width: '100%' }}
+          >
+            {snackbarText}
+          </MuiAlert>
+              </Snackbar> */}
+      </div>
+    </Paper>
   );
 };
 

@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { useMoralis, useMoralisWeb3Api } from 'react-moralis';
 import { MoralisChainOptions } from './useMoralisChainOptions';
+import { useSearchContext } from '@/hooks/useSearch';
 export interface WalletBalance {
   symbol: string;
   name: string;
@@ -27,12 +28,17 @@ export const useWalletBalance = (
 ): WalletBalance[] | null | undefined => {
   const { account, token } = useMoralisWeb3Api();
   const { isInitialized } = useMoralis();
+  const { setErc20Result } = useSearchContext();
 
   const [assets, setAssets] = useState<WalletBalance[] | null | undefined>(undefined);
 
   useEffect(() => {
     if (isInitialized && address !== '') {
-      getTokenBalances().then((balance) => setAssets(balance));
+      setErc20Result(false);
+      getTokenBalances().then((balance) => {
+        setAssets(balance);
+        setErc20Result(true);
+      });
     }
   }, [address, chain]);
 
@@ -62,9 +68,8 @@ export const useWalletBalance = (
         return null;
       });
     console.log('Fetched all ERC20 balances for chain: ' + chain);
-    
-    if (tokens === null || tokens.length === 0)
-      return null;
+
+    if (tokens === null || tokens.length === 0) return null;
 
     // create Map() to store token balances, populate with info from API call.
     const tokenBalances: Map<String, WalletBalance> = new Map();

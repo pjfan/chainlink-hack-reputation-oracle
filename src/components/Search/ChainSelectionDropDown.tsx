@@ -12,7 +12,7 @@ export const ChainSelectionDropDown: React.FC = () => {
     <FormControl>
       <InputLabel>Network</InputLabel>
       <Select
-        sx={{ width: '200px' }}
+        sx={{ width: '150px' }}
         value={network}
         label="Network"
         onChange={(e) => {
