@@ -2,6 +2,7 @@ import { Box, Grid, TextField } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import { ERC20Integration } from "./ERC20Integration";
 import { AddressHistory } from "./AddressHistory";
+import { ReputationScoreIntegration } from "./ReputationScoreIntegration";
 import { useWeb3 } from "@/context/web3Context";
 import { Search } from "../Search/Search";
 import { useSearchContext } from "@/hooks/useSearch";
@@ -24,6 +25,11 @@ export const ReputationContent: React.FC = () => {
       <Grid item xs={6} md={4}>
         Address history:
         <AddressHistory address={address} chain={network} />
+      </Grid>
+
+      <Grid item xs={6} md={4}>
+        Reputation score:
+        <ReputationScoreIntegration address={address} chain={network} />
       </Grid>
 
       <Grid item xs={6} md={4}>

@@ -28,7 +28,7 @@ export const useActivity = (
     address: address,
   });
 
-  const {
+  let {
     fetch: getHistory,
     data: history,
     error: error2,
@@ -65,14 +65,17 @@ export const useActivity = (
     const activeBuyerSeller = transactionsPerMonth > 2;
 
     await getHistory({ params: { chain: chain, address: address } });
-    let numAllTransactions = history?.['total'];
-    if (numAllTransactions === undefined) {
-      numAllTransactions = 1;
+    if (history?.['total'] && history?.['page_size'] && history?.['total'] !== 0) {
+      if (history?.['total'] > history?.['page_size']){
+        const offset: number = history?.['total'] - (history?.['total'] % history?.['page_size']);
+        console.log("Total transactions (" + history?.['total'] + ") greater than page size (" + history?.['page_size'] + "). Getting last page using offset of: " + offset);
+        history = await account.getTransactions({chain: chain, address: address, offset: offset});
+        console.log("Getting last page (page " + history?.['page'] + ") of transactions.");
+      }
     }
 
     if (history !== undefined && history?.result !== undefined) {
-      const result = history.result;
-      const firstTransaction = history.result[numAllTransactions - 1];
+      const firstTransaction = history.result[history.result.length - 1];
       if (firstTransaction === undefined) return;
 
       const firstTransactionTimestamp = moment(firstTransaction['block_timestamp']);
