@@ -20,10 +20,6 @@ export const ReputationContent: React.FC = () => {
             <ERC20Integration chain={network} address={address} />
             <POAPList chain={network} address={address} />
           </Box>
-          {/* <Box>
-            POAP integration
-            <POAPList chain={network} address={address} />
-          </Box> */}
         </Box>
       </Grid>
 
@@ -43,18 +39,6 @@ export const ReputationContent: React.FC = () => {
           Github verification
         </Box>
       </Grid>
-
-      {/* <Grid item xs={6} md={4}>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "primary.main" }}>
-          NFT collections
-        </Box>
-      </Grid> */}
-
-      {/* <Grid item xs={6} md={4}>
-        <Box sx={{ width: 200, height: 200, backgroundColor: "primary.main" }}>
-          POAP integration
-        </Box>
-      </Grid> */}
     </Grid>
   );
 };
