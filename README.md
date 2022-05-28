@@ -1,46 +1,50 @@
-This is an example application that uses [CyberConnect API](https://docs.cyberconnect.me/), based on [Next.js](https://nextjs.org/).
+Web3 Reputation Oracle built for Chainlink Spring 2022 Hackathon. Aggregates and synthesizes on-chain data using Moralis SDK and calculates a "reputation score" using it. Also allows users to connect wallet and edit/manage Decentralized Identity Data via CyberConnect / Ceramic.
 
-Deployed to https://cyberconnect-start.netlify.app/ via [Netlify](https://www.netlify.com/)
-
-Fork it freely.
-
-## Features
-
-This app includes two features:
-
-#### 1. follow/unfollow
-
-The app allows the current user to search a wallet address and follow/unfollow it.
-
-#### 2. followings/followers list
-
-The app displays the current user followings and followers list.
+Forked from CyberConnect API.
 
 ## Getting Started
 
 Install the dependencies:
 
 ```bash
-npm install
-# or
 yarn
 ```
 
-After installing the dependencies, run the development server:
+Create a .env file and add Moralis server URL and app ID variables to the .env file. (See .env.example).
 
 ```bash
-npm run dev
-# or
+MORALIS_SERVER_URL=""
+MORALIS_APP_ID=""
+```
+
+After installing the dependencies and setting config variables, run the development server:
+
+```bash
 yarn dev
 ```
 
 Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+To build the project the project and run in production.
 
-## Learn More
+```bash
+yarn build
+yarn start
+```
 
-To learn more about CyberConnect, take a look at the following resources:
+## Getting started with the backend API
 
-- [CyberConnect Web Site](https://cyberconnect.me/) - introduction to CyberConnect,
-- [CyberConnect Developers Documentation](https://docs.cyberconnect.me/) - dig deeper into CyberConnect API.
+Navigate to the /chainlink-hack-api directory and follow instructions in README.md.
+
+## Getting started with the Chainlink adapter smart contract
+
+Navigate to the /chainlink-hack-oracle-contracts directory and follow instructions in README.md.
+
+
+## Links
+
+* Deployed ReputationOracle: https://chainlink-hack-web3-rep-oracle.herokuapp.com/
+
+* Deployed ReputationOracle API (for integration with Chainlink adapter): https://chainlink-hack-api.herokuapp.com/
+
+* Address of Chainlink Adapter Smart Contract (on Kovan): 
