@@ -4,7 +4,6 @@ import Ceramic from '@ceramicnetwork/http-client';
 import { DID, DIDProvider } from "dids";
 import { EthereumAuthProvider, ThreeIdConnect } from "@3id/connect";
 import type { CeramicApi } from "@ceramicnetwork/common";
-import { ethers } from "ethers";
 
 // Store threeId as global in window, because recreating it every time page loads
 // can be inefficeint.
