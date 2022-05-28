@@ -1,6 +1,5 @@
 import KeyDidResolver from "key-did-resolver";
 import ThreeIdResolver from "@ceramicnetwork/3id-did-resolver";
-import { AbstractConnector } from "@web3-react/abstract-connector";
 import Ceramic from '@ceramicnetwork/http-client';
 import { DID, DIDProvider } from "dids";
 import { EthereumAuthProvider, ThreeIdConnect } from "@3id/connect";
