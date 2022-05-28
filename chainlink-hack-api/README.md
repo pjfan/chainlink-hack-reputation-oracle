@@ -47,6 +47,14 @@ After starting your server, you can navigate to the following URLs to test the A
 * http://localhost:3000/api/nft/<chain>/<address>
 * http://localhost:3000/api/poap/<chain>/<address>
 * http://localhost:3000/api/address_history/<chain>/<address>
+  
+## Sample Reputation Score API Queries (Production)
+
+* Vitalik's reputation score using our Reputation Oracle REST API (on eth mainnet): https://chainlink-hack-api.herokuapp.com/api/reputation/eth/0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+
+* Vitalik's bag using our Reputation Oracle REST API: https://chainlink-hack-api.herokuapp.com/api/erc20/eth/0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+
+* Vitalik's NFTs using our Reputation Oracle REST API: https://chainlink-hack-api.herokuapp.com/api/nft/eth/0xd8da6bf26964af9d7eed9e03e53415d37aa96045
 
 ## Links
 
