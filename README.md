@@ -40,6 +40,13 @@ Navigate to the /chainlink-hack-api directory and follow instructions in README.
 
 Navigate to the /chainlink-hack-oracle-contracts directory and follow instructions in README.md.
 
+## Sample Reputation Score API Queries
+
+* Vitalik's reputation score using our Reputation Oracle REST API (on eth mainnet): https://chainlink-hack-api.herokuapp.com/api/reputation/eth/0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+
+* Vitalik's bag using our Reputation Oracle REST API: https://chainlink-hack-api.herokuapp.com/api/erc20/eth/0xd8da6bf26964af9d7eed9e03e53415d37aa96045
+
+* Vitalik's NFTs using our Reputation Oracle REST API: https://chainlink-hack-api.herokuapp.com/api/nft/eth/0xd8da6bf26964af9d7eed9e03e53415d37aa96045
 
 ## Links
 
@@ -57,3 +64,5 @@ Navigate to the /chainlink-hack-oracle-contracts directory and follow instructio
 * @vfei: https://github.com/vfei
 * @shivenmian: https://github.com/shivenmian
 * @isaacrestrick: https://github.com/isaacrestrick
+* @spaceh3ad: https://github.com/spaceh3ad
+
