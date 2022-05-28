@@ -48,3 +48,7 @@ After starting your server, you can navigate to the following URLs to test the A
 * http://localhost:3000/api/poap/<chain>/<address>
 * http://localhost:3000/api/address_history/<chain>/<address>
 
+## Links
+
+Deployed API on heroku: https://chainlink-hack-api.herokuapp.com/
+
