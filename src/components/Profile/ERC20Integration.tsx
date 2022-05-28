@@ -39,8 +39,8 @@ export const ERC20Integration: React.FC<ERC20IntegrationProps> = (props: ERC20In
                     <TableCell align="left">Symbol</TableCell>
                     <TableCell align="left">Name</TableCell>
                     <TableCell align="left">Balance</TableCell>
-                    <TableCell align="left">Price</TableCell>
-                    <TableCell align="left">Value</TableCell>
+                    {/* <TableCell align="left">Price</TableCell>
+                    <TableCell align="left">Value</TableCell> */}
                     <TableCell align="left">Address</TableCell>
                   </TableRow>
                 </TableHead>
@@ -63,8 +63,8 @@ export const ERC20Integration: React.FC<ERC20IntegrationProps> = (props: ERC20In
                       </TableCell>
                       <TableCell align="left">{row.name}</TableCell>
                       <TableCell align="left">{row.balance}</TableCell>
-                      <TableCell align="left">{row.price}</TableCell>
-                      <TableCell align="left">{row.value}</TableCell>
+                      {/* <TableCell align="left">{row.price}</TableCell>
+                      <TableCell align="left">{row.value}</TableCell> */}
                       <TableCell align="left">{row.token_address}</TableCell>
                     </TableRow>
                   ))}

@@ -87,19 +87,19 @@ export const useWalletBalance = (
     }
 
     // attempt to get price data for each token
-    for (const token of tokens!) {
-      const price: number | null = await getTokenPrice(token, chain);
-      try {
-        const tokenInfo: WalletBalance | undefined = tokenBalances.get(token.token_address);
-        if (tokenInfo && price) {
-          tokenInfo!.price = price;
-          tokenInfo!.value = tokenInfo.price * tokenInfo.balance;
-          tokenBalances.set(token.token_address, tokenInfo);
-        }
-      } catch (error) {
-        console.log(error);
-      }
-    }
+    // for (const token of tokens!) {
+    //   const price: number | null = await getTokenPrice(token, chain);
+    //   try {
+    //     const tokenInfo: WalletBalance | undefined = tokenBalances.get(token.token_address);
+    //     if (tokenInfo && price) {
+    //       tokenInfo!.price = price;
+    //       tokenInfo!.value = tokenInfo.price * tokenInfo.balance;
+    //       tokenBalances.set(token.token_address, tokenInfo);
+    //     }
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // }
 
     return Array.from(tokenBalances.values());
   };
