@@ -47,4 +47,6 @@ Navigate to the /chainlink-hack-oracle-contracts directory and follow instructio
 
 * Deployed ReputationOracle API (for integration with Chainlink adapter): https://chainlink-hack-api.herokuapp.com/
 
-* Address of Chainlink Adapter Smart Contract (on Kovan): 
+* Chainlink Adapter Smart Contracts (on Kovan):
+** https://kovan.etherscan.io/address/0x0C3F161489E265f6b4d8Aa04f27F3CdC9346dED6
+** https://kovan.etherscan.io/address/0x616061189e17C0CaD7DA9504196C2a5c46eE9479
